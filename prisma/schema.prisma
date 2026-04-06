@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id        String       @id @default(cuid())
+  email     String       @unique
+  password  String
+  role      String       // "ADMIN" or "ANNOTATOR"
+  tasks     Task[]       @relation("TaskAssignments")
+  createdTasks Task[]    @relation("CreatedTasks")
+  annotations Annotation[]
+}
+
+model Task {
+  id          String       @id @default(cuid())
+  name        String
+  labels      String       // JSON string array: ["cat", "dog"]
+  createdBy   User         @relation("CreatedTasks", fields: [createdById], references: [id])
+  createdById String
+  annotators  User[]       @relation("TaskAssignments")
+  images      Image[]
+  annotations Annotation[]
+  createdAt   DateTime     @default(now())
+}
+
+model Image {
+  id          String       @id @default(cuid())
+  url         String
+  taskId      String
+  task        Task         @relation(fields: [taskId], references: [id])
+  annotations Annotation[]
+  status      String       @default("PENDING") // PENDING, ANNOTATED, REJECTED, APPROVED
+}
+
+model Annotation {
+  id           String   @id @default(cuid())
+  imageId      String
+  image        Image    @relation(fields: [imageId], references: [id])
+  label        String
+  annotatorId  String
+  annotator    User     @relation(fields: [annotatorId], references: [id])
+  taskId       String
+  task         Task     @relation(fields: [taskId], references: [id])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  isAccepted   Boolean?
+  rejectReason String?
+  prelabelUsed Boolean?
+  isDifficult  Boolean  @default(false)
+}

@@ -1,11 +1,42 @@
-<div align="center">
+# Intelligent Data Annotation Platform (IDAP)
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+This is an enterprise-grade MVP for image classification and intelligent pre-labeling.
 
-  <h1>Built with AI Studio</h2>
+## Features
+- **JWT Authentication**: Secure login for Admins and Annotators.
+- **Task Management**: Admins can create tasks, upload images, and assign them.
+- **Annotation Workspace**: High-performance UI with keyboard shortcuts and pre-labeling.
+- **AI Pre-labeling**: Simulated AI model to speed up the annotation process.
+- **Quality Control**: Admin review workflow (Approve/Reject).
+- **Dashboard**: Real-time statistics and data export.
 
-  <p>The fastest path from prompt to production with Gemini.</p>
+## Quick Start (Local Development)
 
-  <a href="https://aistudio.google.com/apps">Start building</a>
+1. **Install Dependencies**:
+   ```bash
+   npm install
+   ```
 
-</div>
+2. **Setup Database**:
+   The project uses SQLite by default for easy demonstration.
+   ```bash
+   npx prisma generate
+   npx prisma db push
+   ```
+
+3. **Run the App**:
+   ```bash
+   npm run dev
+   ```
+   Access the app at `http://localhost:3000`.
+
+## Docker Deployment
+
+1. **Build and Run**:
+   ```bash
+   docker-compose up --build
+   ```
+
+## Credentials (Default)
+- **Admin**: `admin@idap.ai` / `admin123`
+- **Annotator**: `annotator@idap.ai` / `annotator123`
